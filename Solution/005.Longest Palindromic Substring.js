@@ -71,3 +71,32 @@ var longestPalindrome2 = function (s) {
 
   return res;
 };
+
+/**
+ * 方法三
+ * 扩展中心方式
+ * 因为回文关于中心对称，因此只需要从中间扩展，若两侧字符相同，则扩展后的字符串也是回文
+ * 由于有 aba 和 abba 这两种情况 (长度为奇数/偶数的回文)
+ * 使用 i, i 和  i, i + 1
+ */
+var longestPalindrome3 = function (s = "") {
+  let longest = s.length < 2 ? s : "";
+  let temp = ""
+  for (let i = 0; i < s.length - 1; i++) {
+    temp = expand(s, i, i);
+    if (temp.length > longest.length) longest = temp;
+    temp = expand(s, i, i + 1);
+    if (temp.length > longest.length) longest = temp;
+  }
+
+  return longest;
+};
+
+function expand(s, i, j) {
+  while (i >= 0 && j <= s.length - 1 && s[i] === s[j]) {
+    i--;
+    j++;
+  }
+
+  return s.slice(i + 1, j);
+}
